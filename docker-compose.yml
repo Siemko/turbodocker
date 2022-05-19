@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  monorepo:
+    restart: unless-stopped
+    image: node:16-bullseye-slim
+    volumes:
+      - ".:/usr/app"
+      - "root_node_modules:/usr/app/node_modules"
+      - "docs_node_modules:/usr/app/apps/docs/node_modules"
+      - "web_node_modules:/usr/app/apps/web/node_modules"
+      - "eslint_node_modules:/usr/app/packages/eslint-config-acme/node_modules"
+      - "ui_node_modules:/usr/app/packages/ui/node_modules"
+    working_dir: /usr/app
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    command: sh -c "apt-get update -y && apt-get install openssl procps git -y && corepack disable && corepack enable && pnpm install && pnpm run dev"
+
+
+
+
+volumes:
+  web_node_modules:
+  docs_node_modules:
+  root_node_modules:
+  eslint_node_modules:
+  ui_node_modules:
